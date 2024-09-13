@@ -1,3 +1,10 @@
-export const name: string = 'Daniel'
+import { Server } from './presentation/server'
 
-console.log(name)
+// funcion anonima autoinvocada
+;(async () => {
+  main()
+})()
+
+function main() {
+  Server.start()
+}
