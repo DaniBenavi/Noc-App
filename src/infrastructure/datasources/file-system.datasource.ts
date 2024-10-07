@@ -4,9 +4,9 @@ import { LogEntity, LogSeverityLevel } from '../../domain/entities/log.entity'
 
 export class FileSystemDataSource implements LogDataSource {
   private readonly logPath = 'logs/'
-  private readonly allLogsPath    = 'logs/logs-all.log';
-  private readonly mediumLogsPath = 'logs/logs-medium.log';
-  private readonly highLogsPath   = 'logs/logs-high.log';
+  private readonly allLogsPath = 'logs/logs-all.log'
+  private readonly mediumLogsPath = 'logs/logs-medium.log'
+  private readonly highLogsPath = 'logs/logs-high.log'
   constructor() {
     this.createLogFiles()
   }
@@ -38,6 +38,7 @@ export class FileSystemDataSource implements LogDataSource {
 
   private getLogsFromFile = (filePath: string): LogEntity[] => {
     const content = fs.readFileSync(filePath, 'utf-8')
+    if (content === '') return []
 
     const logs = content.split('\n').map(log => LogEntity.fromJson(log))
 
