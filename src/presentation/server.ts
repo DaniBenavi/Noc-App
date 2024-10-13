@@ -6,11 +6,13 @@ import { CronService } from './cron/cron-service'
 import { CheckService } from '../domain/uses-cases/checks/check-service'
 import { MongoLogDatasource } from '../infrastructure/datasources/mongo-log.datasource'
 import { LogSeverityLevel } from '../domain/entities/log.entity'
+import { PostgresLogDataSource } from '../infrastructure/datasources/postgres-log.datasource'
+import { CheckServiceMultiple } from '../domain/uses-cases/checks/check-service -multiple'
 
-const logRepository = new LogRepositoryImpl(
-  // new FileSystemDataSource()
-  new MongoLogDatasource()
-)
+const fsLogRepository = new LogRepositoryImpl(new FileSystemDataSource())
+const mongoLogRepository = new LogRepositoryImpl(new MongoLogDatasource())
+const postgresLogRepository = new LogRepositoryImpl(new PostgresLogDataSource())
+
 const emailService = new EmailService()
 export class Server {
   public static async start() {
@@ -22,15 +24,15 @@ export class Server {
     // new SendEmailLogs(emailService, logRepository).execute([''])
 
     // CronService.createJob('*/5 * * * * *', () => {
-    //   const url = 'http://wiucnewgoogle.com'
-    //   new CheckService(
-    //     logRepository,
+    //   const url = 'http://google.com'
+    //   new CheckServiceMultiple(
+    //     [fsLogRepository, mongoLogRepository, postgresLogRepository],
     //     () => console.log(`${url} is ok`),
     //     error => console.log(error)
     //   ).execute(url)
     // })
 
-    const logs = await logRepository.getLogs(LogSeverityLevel.low)
-    console.log(logs)
+    // const logs = await logRepository.getLogs(LogSeverityLevel.high)
+    // console.log(logs)
   }
 }
