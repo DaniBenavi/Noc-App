@@ -1,15 +1,15 @@
-import nodemailer from 'nodemailer'
-import { envs } from '../../config/plugins/env.plugins'
+import nodemailer from 'nodemailer';
+import { envs } from '../../config/plugins/env.plugins';
 
-interface SendMailOptions {
-  to: string | string[]
-  subject: string
-  htmlbody: string
-  attachements?: Attachement[]
+export interface SendMailOptions {
+  to: string | string[];
+  subject: string;
+  htmlbody: string;
+  attachements?: Attachement[];
 }
-interface Attachement {
-  filename: string
-  path: string
+export interface Attachement {
+  filename: string;
+  path: string;
 }
 
 export class EmailService {
@@ -17,50 +17,50 @@ export class EmailService {
     service: envs.MAIL_SERVICE,
     auth: {
       user: envs.MAILER_EMAIL,
-      pass: envs.MAILER_SECRET_KEY
-    }
-  })
+      pass: envs.MAILER_SECRET_KEY,
+    },
+  });
 
   constructor() {}
 
   async sendEmail(options: SendMailOptions): Promise<boolean> {
-    const { to, subject, htmlbody, attachements = [] } = options
+    const { to, subject, htmlbody, attachements = [] } = options;
     try {
       const sentInformation = await this.transporter.sendMail({
         to: to,
         subject: subject,
         html: htmlbody,
-        attachments: attachements
-      })
+        attachments: attachements,
+      });
 
-      console.log(sentInformation)
+      console.log(sentInformation);
 
-      return true
+      return true;
     } catch (error) {
-      console.log(error)
+      console.log(error);
 
-      return false
+      return false;
     }
   }
 
   async sendEmailWithFileSystemLogs(to: string | string[]) {
-    const subject = 'Logs del sistema'
+    const subject = 'Logs del sistema';
     const htmlbody = `
         <h3>Logs de sistema NOC</h3>
         <p>Ver logs Adjuntos!</p>
-      `
+      `;
 
     const attachements: Attachement[] = [
       { filename: 'logs-all.log', path: './logs/logs-all.log' },
       { filename: 'logs-high.log', path: './logs/logs-high.log' },
-      { filename: 'logs-medium.log', path: './logs/logs-medium.log' }
-    ]
+      { filename: 'logs-medium.log', path: './logs/logs-medium.log' },
+    ];
 
     return this.sendEmail({
       to,
       subject,
       htmlbody,
-      attachements
-    })
+      attachements,
+    });
   }
 }

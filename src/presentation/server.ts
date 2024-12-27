@@ -1,4 +1,4 @@
-import { LogRepositoryImpl } from '../infrastructure/repositories/los-repository.impl'
+import { LogRepositoryImpl } from '../infrastructure/repositories/log-repository.impl'
 import { FileSystemDataSource } from '../infrastructure/datasources/file-system.datasource'
 import { EmailService } from './email/email-service'
 import { SendEmailLogs } from '../domain/uses-cases/email/send-email-logs'
@@ -7,7 +7,7 @@ import { CheckService } from '../domain/uses-cases/checks/check-service'
 import { MongoLogDatasource } from '../infrastructure/datasources/mongo-log.datasource'
 import { LogSeverityLevel } from '../domain/entities/log.entity'
 import { PostgresLogDataSource } from '../infrastructure/datasources/postgres-log.datasource'
-import { CheckServiceMultiple } from '../domain/uses-cases/checks/check-service -multiple'
+import { CheckServiceMultiple } from '../domain/uses-cases/checks/check-service-multiple'
 
 const fsLogRepository = new LogRepositoryImpl(new FileSystemDataSource())
 const mongoLogRepository = new LogRepositoryImpl(new MongoLogDatasource())
